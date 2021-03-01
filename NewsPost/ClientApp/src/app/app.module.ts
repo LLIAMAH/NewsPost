@@ -16,6 +16,7 @@ import { PostsComponent } from './posts/posts.component';
 import { PostSearchComponent } from './post-search/post-search.component';
 import { PostComponent } from './post/post.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { SideBarComponent } from './side-bar/side-bar.component';
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent, canActivate: [AuthorizeGuard] },
-    ])
+    ]),
+    NgbModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true }
