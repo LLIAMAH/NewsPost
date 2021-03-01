@@ -14,7 +14,6 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { PostsComponent } from './posts/posts.component';
 import { PostSearchComponent } from './post-search/post-search.component';
-import { PostComponent } from './post/post.component';
 import { SideBarComponent } from './side-bar/side-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,7 +26,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     FetchDataComponent,
     PostsComponent,
     PostSearchComponent,
-    PostComponent,
     SideBarComponent
   ],
   imports: [
