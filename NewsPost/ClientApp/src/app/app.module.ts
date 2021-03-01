@@ -14,7 +14,7 @@ import { AuthorizeGuard } from 'src/api-authorization/authorize.guard';
 import { AuthorizeInterceptor } from 'src/api-authorization/authorize.interceptor';
 import { PostsComponent } from './components/posts/posts/posts.component';
 import { PostSearchComponent } from './components/posts/post-search/post-search.component';
-import { SideBarComponent } from './side-bar/side-bar.component';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { PostAddComponent } from './components/posts/post-add/post-add.component';
 
