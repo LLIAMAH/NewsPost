@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {Post} from '../app-interfaces/interfaces';
+import {Post} from '../../../app-interfaces/interfaces';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
