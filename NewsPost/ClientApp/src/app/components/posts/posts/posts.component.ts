@@ -8,8 +8,8 @@ import {HttpClient} from '@angular/common/http';
   styleUrls: ['./posts.component.css']
 })
 export class PostsComponent implements OnInit {
-  
-  public arrayOfPosts: IPost[];
+
+  public arrayOfPosts: Array<IPost>;
 
   constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
     http.get<IPost[]>(baseUrl + 'posts').subscribe(result => {
