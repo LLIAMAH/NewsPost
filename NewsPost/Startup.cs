@@ -1,12 +1,18 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NewsPost.Data;
 using NewsPost.Data.Entities;
-using NewsPost.Data.Reps;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewsPost
 {
@@ -24,24 +30,18 @@ namespace NewsPost
         {
             services.AddDbContext<AppDbCtx>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("connectionString")));
+                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddScoped<IRepUsers, Rep>();
-            services.AddScoped<IRepNews, Rep>();
-            services.AddScoped<IRepPosts, Rep>();
-
-            services.AddDefaultIdentity<ApplicationUser>(
-                    options =>
-                    {
-                        options.SignIn.RequireConfirmedAccount = true;
-                        options.Password.RequireDigit = false;
-                        options.Password.RequireLowercase = false;
-                        options.Password.RequireNonAlphanumeric = false;
-                        options.Password.RequireUppercase = false;
-                        options.Password.RequiredLength = 6;
-                        options.Password.RequiredUniqueChars = 0;
-                    })
+            services.AddDefaultIdentity<ApplicationUser>(options => {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 0;
+            })
                 .AddEntityFrameworkStores<AppDbCtx>();
             services.AddControllersWithViews();
         }

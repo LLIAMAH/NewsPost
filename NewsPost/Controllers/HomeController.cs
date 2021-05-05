@@ -2,28 +2,25 @@
 using Microsoft.Extensions.Logging;
 using NewsPost.Models;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using NewsPost.Data.Reps;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewsPost.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IRepNews _rep;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(IRepNews rep, ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger)
         {
-            this._rep = rep;
-            this._logger = logger;
+            _logger = logger;
         }
 
         public IActionResult Index()
         {
-            var result = _rep.GetNewsDaily(DateTime.Now);
-            return string.IsNullOrEmpty(result.Error) 
-                ? View(result) 
-                : View(default);
+            return View();
         }
 
         public IActionResult Privacy()
