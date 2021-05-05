@@ -8,7 +8,9 @@ namespace NewsPost.Data.Entities
         [Key]
         public long Id { get; set; }
         [Required]
+        [Display(Name = "Title")]
         public string Title { get; set; }
+        [Display(Name = "Sub title")]
         public string SubTitle { get; set; }
         [Required]
         public string Text { get; set; }

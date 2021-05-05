@@ -43,7 +43,6 @@ namespace NewsPost.Controllers
             {
                 this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
             }
-            return View();
         }
 
         public IActionResult Privacy()

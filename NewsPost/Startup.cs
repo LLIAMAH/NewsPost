@@ -35,6 +35,7 @@ namespace NewsPost
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddScoped<IRepNews, Rep>();
+            services.AddScoped<IRepPosts, Rep>();
 
             services.AddDefaultIdentity<ApplicationUser>(options => {
                 options.SignIn.RequireConfirmedAccount = true;

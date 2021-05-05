@@ -1,0 +1,50 @@
+﻿@model NewsPost.Data.Reps.IResult<IEnumerable<NewsPost.Data.Entities.Article>>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "View of the unapproved list of data";
+}
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{ 
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-danger" role="alert">
+                @Model.Error
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Data != null && Model.Data.Any())
+{
+    <div class="row">
+        <div class="col">
+            <div class="accordion" id="accordionUnapprovedItems">
+                @foreach (var item in Model.Data)
+                {
+                    <div class="card">
+                        <div class="card-header" id="heading_@item.Id">
+                            <h2 class="mb-0">
+                                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse_@item.Id" aria-expanded="true" aria-controls="collapse_@item.Id">
+                                    @item.Title
+                                </button>
+                            </h2>
+                        </div>
+
+                        <div id="collapse_@item.Id" class="collapse" aria-labelledby="heading_@item.Id" data-parent="#accordionUnapprovedItems">
+                            <div class="card-body">
+                                @item.Text
+                            </div>
+                            <div class="card-footer">
+                                @item.Author.UserName @item.DateCreated.ToShortDateString()
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+

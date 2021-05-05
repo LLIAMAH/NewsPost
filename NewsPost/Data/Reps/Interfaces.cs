@@ -5,7 +5,7 @@ using NewsPost.Data.Entities;
 
 namespace NewsPost.Data.Reps
 {
-    public interface IRep: IRepUser, IRepNews { }
+    public interface IRep: IRepUser, IRepNews, IRepPosts { }
 
     public interface IResult<out T>
     {
@@ -22,5 +22,11 @@ namespace NewsPost.Data.Reps
     public interface IRepNews
     {
         IResult<IEnumerable<Article>> GetNewsDaily(DateTime dateTime);
+    }
+
+    public interface IRepPosts : IRepUser
+    {
+        IResult<IEnumerable<Article>> GetUnApprovedArticles(string userId);
+        IResult<bool> Create(Article article);
     }
 }
