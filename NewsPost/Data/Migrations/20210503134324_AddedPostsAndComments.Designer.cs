@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewsPost.Data;
 
 namespace NewsPost.Data.Migrations
 {
     [DbContext(typeof(AppDbCtx))]
-    partial class AppDbCtxModelSnapshot : ModelSnapshot
+    [Migration("20210503134324_AddedPostsAndComments")]
+    partial class AddedPostsAndComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,7 +234,7 @@ namespace NewsPost.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<long?>("NewsId")
+                    b.Property<long?>("PostId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Text")
@@ -242,41 +244,9 @@ namespace NewsPost.Data.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("NewsId");
+                    b.HasIndex("PostId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("NewsPost.Data.Entities.News", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("AuthorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("DateApproved")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("SubTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("News");
                 });
 
             modelBuilder.Entity("NewsPost.Data.Entities.Post", b =>
@@ -306,29 +276,6 @@ namespace NewsPost.Data.Migrations
                     b.HasIndex("AuthorId");
 
                     b.ToTable("Posts");
-                });
-
-            modelBuilder.Entity("NewsPost.Data.Entities.Revision", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateCreated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long?>("PostId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.ToTable("Revisions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -388,18 +335,9 @@ namespace NewsPost.Data.Migrations
                         .WithMany()
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("NewsPost.Data.Entities.News", null)
+                    b.HasOne("NewsPost.Data.Entities.Post", null)
                         .WithMany("Comments")
-                        .HasForeignKey("NewsId");
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("NewsPost.Data.Entities.News", b =>
-                {
-                    b.HasOne("NewsPost.Data.Entities.ApplicationUser", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
+                        .HasForeignKey("PostId");
 
                     b.Navigation("Author");
                 });
@@ -413,21 +351,9 @@ namespace NewsPost.Data.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("NewsPost.Data.Entities.Revision", b =>
-                {
-                    b.HasOne("NewsPost.Data.Entities.Post", null)
-                        .WithMany("Revisions")
-                        .HasForeignKey("PostId");
-                });
-
-            modelBuilder.Entity("NewsPost.Data.Entities.News", b =>
+            modelBuilder.Entity("NewsPost.Data.Entities.Post", b =>
                 {
                     b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("NewsPost.Data.Entities.Post", b =>
-                {
-                    b.Navigation("Revisions");
                 });
 #pragma warning restore 612, 618
         }

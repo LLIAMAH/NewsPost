@@ -1,8 +1,42 @@
-﻿@{
+﻿@model NewsPost.Data.Reps.IResult<IEnumerable<NewsPost.Data.Entities.News>>
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.Error
+    </div>
+}
+else
+{
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
+    {
+        <div class="row">
+            <a class="btn btn-lg btn-primary" asp-area="" asp-controller="Posts" asp-action="Create">Create new Post</a>
+        </div>
+    }
+    <div class="row">
+        <div class="col">
+            @foreach (var post in Model.Data)
+            {
+                <div class="card">
+                    @*<img src="..." class="card-img-top" alt="image">*@
+                    <div class="card-body">
+                        <h5 class="card-title">@post.Title</h5>
+                        @if (!string.IsNullOrEmpty(post.SubTitle))
+                        {
+                            <h6 class="card-subtitle mb-2 text-muted">@post.SubTitle</h6>
+                        }
+                        <p class="card-text">@post.Text</p>
+                    </div>
+                    <div class="card-body">
+                        <a href="#" class="card-link">@post.DateCreated.Date.ToShortDateString()</a>
+                        <a href="#" class="card-link">@post.Author.UserName</a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NewsPost.Data;
 using NewsPost.Data.Entities;
+using NewsPost.Data.Reps;
 
 namespace NewsPost
 {
@@ -23,8 +24,12 @@ namespace NewsPost
         {
             services.AddDbContext<AppDbCtx>(options =>
                 options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                    Configuration.GetConnectionString("connectionString")));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddScoped<IRepUsers, Rep>();
+            services.AddScoped<IRepNews, Rep>();
+            services.AddScoped<IRepPosts, Rep>();
 
             services.AddDefaultIdentity<ApplicationUser>(
                     options =>

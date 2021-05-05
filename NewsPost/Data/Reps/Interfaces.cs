@@ -1,31 +1,31 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using NewsPost.Data.Entities;
 
 namespace NewsPost.Data.Reps
 {
-    public interface IRep
-    {
-    }
+    public interface IRep: IRepUsers, IRepNews, IRepPosts { }
 
-    public interface IResult<T>
+    public interface IResult<out T>
     {
-        public string Error { get; }
-        public T Data { get; }
-    }
-
-    public interface IRep<in TId, T>
-    {
-        IResult<IEnumerable<T>> Get();
-        IResult<T> Get(TId id);
-        IResult<bool> Add(T item);
-        IResult<bool> Update(TId id, T item);
-        IResult<bool> Delete(TId id);
+        string Error { get; }
+        T Data { get; }
     }
 
     public interface IRepUsers
     {
         ApplicationUser GetUser(IPrincipal principal);
         string GetUserId(IPrincipal principal);
+    }
+
+    public interface IRepNews
+    {
+        IResult<IEnumerable<News>> GetNewsDaily(DateTime date);
+    }
+
+    public interface IRepPosts
+    {
+        IResult<IEnumerable<Post>> GetPosts();
     }
 }
