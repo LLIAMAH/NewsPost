@@ -34,12 +34,7 @@
                         </div>
 
                         <div id="collapse_@item.Id" class="collapse" aria-labelledby="heading_@item.Id" data-parent="#accordionUnapprovedItems">
-                            <div class="card-body">
-                                @item.Text
-                            </div>
-                            <div class="card-footer">
-                                @item.Author.UserName @item.DateCreated.ToShortDateString()
-                            </div>
+                            @Html.DisplayFor(m=> item)
                         </div>
                     </div>
                 }
