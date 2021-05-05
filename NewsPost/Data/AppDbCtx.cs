@@ -6,6 +6,8 @@ namespace NewsPost.Data
 {
     public class AppDbCtx : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Article> Articles { get; set; }
+
         public AppDbCtx(DbContextOptions<AppDbCtx> options)
             : base(options)
         {

@@ -1,8 +1,28 @@
-﻿@{
+﻿@model NewsPost.Data.Reps.IResult<IEnumerable<NewsPost.Data.Entities.Article>>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-danger" role="alert">
+                @Model.Error
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Data != null && Model.Data.Any())
+{
+    <div class="row">
+        <div class="col">
+            @foreach (var item in Model.Data)
+            {
+                @Html.DisplayFor(m => item)
+            }
+        </div>
+    </div>
+}
