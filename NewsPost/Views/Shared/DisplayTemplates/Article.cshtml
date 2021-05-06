@@ -1,14 +1,19 @@
 ﻿@model NewsPost.Data.Entities.Article
 
-<div class="card" style="width: 18rem;">
+<div class="card">
     @*<img src="..." class="card-img-top" alt="...">*@
-    <div class="card-body">
+    <div class="card-header">
         <h5 class="card-title">@Model.Title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">@Model.SubTitle</h6>
-        <p class="card-text">@Model.Text</p>
-        <a href="#" class="card-link">@Model.Author.UserName</a>
+        @if (!string.IsNullOrEmpty(Model.SubTitle))
+        {
+            <h6 class="card-subtitle mb-2 text-muted">@Model.SubTitle</h6>
+        }
     </div>
-    <div class="card-footer">
+    <div class="card-body">
+        <p class="card-text">@Model.Text</p>
+    </div>
+    <div class="card-footer text-muted">
+        <a href="#" class="card-link">@Model.Author.UserName</a> 
         @Model.DateCreated.ToShortDateString()
     </div>
 </div>

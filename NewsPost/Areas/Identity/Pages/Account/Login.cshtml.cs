@@ -44,9 +44,11 @@ namespace NewsPost.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "User name")]
             public string UserName { get; set; }
 
             [Required]
+            [Display(Name = "Password")]
             [DataType(DataType.Password)]
             public string Password { get; set; }
 

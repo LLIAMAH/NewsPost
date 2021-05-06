@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using System;
+using System.Reflection;
+using Microsoft.Extensions.Logging;
+using NewsPost.Data.LogData;
 
 namespace NewsPost.Data.Reps
 {
@@ -11,6 +14,26 @@ namespace NewsPost.Data.Reps
         {
             this._ctx = ctx;
             this._logger = logger;
+        }
+
+        private IResult<bool> SaveSafe(AppDbCtx ctx)
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+                ctx.SaveChanges();
+                return new Result<bool>(true);
+            }
+            catch (Exception ex)
+            {
+                this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
+                return new Result<bool>(ex.Message);
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
         }
     }
 }

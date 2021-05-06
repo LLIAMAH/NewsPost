@@ -30,7 +30,7 @@ namespace NewsPost.Data.Reps
             try
             {
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
-                return GetUser(principal)?.UserName;
+                return GetUser(principal)?.Id;
             }
             finally
             {
