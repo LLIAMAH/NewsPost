@@ -28,5 +28,6 @@ namespace NewsPost.Data.Reps
     {
         IResult<IEnumerable<Article>> GetUnApprovedArticles(string userId);
         IResult<bool> Create(Article article);
+        IResult<bool> Approve(long articleId, string userId);
     }
 }

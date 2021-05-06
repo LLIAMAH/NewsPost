@@ -61,5 +61,40 @@ namespace NewsPost.Data.Reps
                 this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
             }
         }
+
+        public IResult<bool> Approve(long articleId, string userId)
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+
+                if (articleId == 0)
+                    throw new ArgumentNullException(nameof(articleId));
+
+                if (string.IsNullOrEmpty(userId))
+                    throw new ArgumentNullException(nameof(userId));
+
+                var article = this._ctx.Articles
+                    .SingleOrDefault(o => o.Id == articleId);
+
+                if (article == null)
+                    throw new Exception("Cannot approve => article didn't find.");
+
+                article.ApprovedById = userId;
+                article.DateApproved = DateTime.Now;
+
+                return SaveSafe(this._ctx);
+            }
+            catch (Exception ex)
+            {
+                this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
+                return new Result<bool>(ex.Message);
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
+        }
     }
 }

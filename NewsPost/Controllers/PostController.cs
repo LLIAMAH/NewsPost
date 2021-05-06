@@ -61,7 +61,7 @@ namespace NewsPost.Controllers
                     throw new ArgumentNullException(nameof(model));
 
                 model.DateCreated = DateTime.Now;
-                model.Author = _rep.GetUser(this.User);
+                model.AuthorId = _rep.GetUserId(this.User);
 
                 var result = _rep.Create(model);
                 if (!string.IsNullOrEmpty(result.Error))
@@ -73,6 +73,32 @@ namespace NewsPost.Controllers
             {
                 this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
                 return RedirectToAction(nameof(Create), model);
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
+        }
+
+        public IActionResult Approve(long id = 0)
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+                if (id == 0)
+                    throw new ArgumentNullException(nameof(id));
+
+                var result = _rep.Approve(id, _rep.GetUserId(this.User));
+                if (!string.IsNullOrEmpty(result.Error))
+                    throw new Exception(result.Error);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
+                return RedirectToAction(nameof(Index));
             }
             finally
             {
