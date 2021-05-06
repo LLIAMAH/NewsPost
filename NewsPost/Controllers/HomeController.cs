@@ -29,7 +29,7 @@ namespace NewsPost.Controllers
             {
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
                 var data = this._rep.GetNewsDaily(DateTime.Now);
-                if (string.IsNullOrEmpty(data?.Error))
+                if (!string.IsNullOrEmpty(data?.Error))
                     throw new Exception(data?.Error);
 
                 return View(data);
