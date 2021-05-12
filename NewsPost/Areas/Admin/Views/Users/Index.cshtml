@@ -1,0 +1,37 @@
+﻿@using System.Linq
+@model NewsPost.Data.Reps.IResult<IEnumerable<UserData>>
+@{
+    ViewData["Title"] = "List of users";
+}
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">
+            <label asp-for="Data.First().User.UserName"></label>
+        </th>
+        <th scope="col">
+            <label asp-for="Data.First().User.Email"></label>
+        </th>
+        <th scope="col">
+            <label asp-for="Data.First().RolesAsString"></label>
+        </th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Data)
+    {
+        <tr>
+            <td>@item.User.UserName</td>
+            <td>@item.User.Email</td>
+            <td>@item.RolesAsString</td>
+            <td>
+                @*
+                for buttons @item.Id
+                *@
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

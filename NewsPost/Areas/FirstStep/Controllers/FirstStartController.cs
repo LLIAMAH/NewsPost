@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +8,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using NewsPost.Areas.FirstStep.Models;
 using NewsPost.Data.Entities;
+using NewsPost.Data.Reps;
 
 namespace NewsPost.Areas.FirstStep.Controllers
 {
@@ -21,7 +19,6 @@ namespace NewsPost.Areas.FirstStep.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<CreateModel> _logger;
-        private readonly IEmailSender _emailSender;
 
         public FirstStartController(SignInManager<ApplicationUser> signInManager,
             ILogger<CreateModel> logger,
@@ -32,7 +29,6 @@ namespace NewsPost.Areas.FirstStep.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
-            _emailSender = emailSender;
             _logger = logger;
         }
 
@@ -53,29 +49,20 @@ namespace NewsPost.Areas.FirstStep.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
-                await _roleManager.CreateAsync(new IdentityRole()
-                {
-                    Name = "Administrator",
-                    NormalizedName = "Administrator"
-                });
+                await _roleManager.CreateAsync(new IdentityRole {Name = ERole.Administrator.ToString(), NormalizedName = ERole.Administrator.ToString()});
+                await _roleManager.CreateAsync(new IdentityRole {Name = ERole.Editor.ToString(), NormalizedName = ERole.Editor.ToString()});
+                await _roleManager.CreateAsync(new IdentityRole { Name = ERole.Writer.ToString(), NormalizedName = ERole.Writer.ToString() });
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
-                    result = await _userManager.AddToRoleAsync(user, "Administrator");
+                    result = await _userManager.AddToRoleAsync(user, ERole.Administrator.ToString());
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
-
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
                     await _userManager.ConfirmEmailAsync(user, code);
-
                     await _signInManager.SignInAsync(user, isPersistent: false);
 
                     return RedirectToAction("Index", "Home", null);

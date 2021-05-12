@@ -34,6 +34,7 @@ namespace NewsPost
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddScoped<IRepUsers, Rep>();
             services.AddScoped<IRepNews, Rep>();
             services.AddScoped<IRepPosts, Rep>();
 
@@ -77,7 +78,7 @@ namespace NewsPost
             {
                 endpoints.MapControllerRoute(
                     name: "areaRoute",
-                    pattern: "{area:exists}/{controller=Admin}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

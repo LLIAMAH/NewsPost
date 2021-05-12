@@ -6,6 +6,12 @@ using NewsPost.Data.Entities;
 
 namespace NewsPost.Data.Reps
 {
+    public enum ERole
+    {
+        Administrator,
+        Editor,
+        Writer
+    }
     public interface IRep: IRepNews, IRepPosts, IRepUsers { }
 
     public interface IResult<out T>
@@ -23,7 +29,7 @@ namespace NewsPost.Data.Reps
 
     public interface IRepUsers
     {
-        IResult<IEnumerable<UserRoles>> GetUserWithRoles();
+        IResult<IEnumerable<UserData>> GetUserWithRoles();
     }
 
     public interface IRepNews: IRepUser

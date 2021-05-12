@@ -44,7 +44,7 @@ namespace NewsPost.Data.Reps
             try
             {
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
-                var role = this._ctx.Roles.SingleOrDefault(o => o.Name.Equals("Administrator"));
+                var role = this._ctx.Roles.SingleOrDefault(o => o.Name.Equals(ERole.Administrator.ToString()));
                 if (role == null)
                     return false;
 
