@@ -51,7 +51,7 @@ namespace NewsPost.Areas.FirstStep.Controllers
                 var user = new ApplicationUser { UserName = model.UserName, Email = model.Email };
                 await _roleManager.CreateAsync(new IdentityRole {Name = ERole.Administrator.ToString(), NormalizedName = ERole.Administrator.ToString()});
                 await _roleManager.CreateAsync(new IdentityRole {Name = ERole.Editor.ToString(), NormalizedName = ERole.Editor.ToString()});
-                await _roleManager.CreateAsync(new IdentityRole { Name = ERole.Writer.ToString(), NormalizedName = ERole.Writer.ToString() });
+                await _roleManager.CreateAsync(new IdentityRole {Name = ERole.Writer.ToString(), NormalizedName = ERole.Writer.ToString()});
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
