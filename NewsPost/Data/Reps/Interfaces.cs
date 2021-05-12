@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using NewsPost.Areas.Admin.Models;
 using NewsPost.Data.Entities;
 
 namespace NewsPost.Data.Reps
 {
-    public interface IRep: IRepUser, IRepNews, IRepPosts { }
+    public interface IRep: IRepNews, IRepPosts, IRepUsers { }
 
     public interface IResult<out T>
     {
@@ -18,6 +19,11 @@ namespace NewsPost.Data.Reps
         ApplicationUser GetUser(IPrincipal principal);
         string GetUserId(IPrincipal principal);
         bool HasAdminUser();
+    }
+
+    public interface IRepUsers
+    {
+        IResult<IEnumerable<UserRoles>> GetUserWithRoles();
     }
 
     public interface IRepNews: IRepUser
