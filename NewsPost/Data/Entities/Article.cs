@@ -11,7 +11,7 @@ namespace NewsPost.Data.Entities
         [Required]
         [Display(Name = "Title")]
         public string Title { get; set; }
-        [Display(Name = "Sub title")]
+        [Display(Name = "Sub title (optional)")]
         public string SubTitle { get; set; }
         [Required]
         public string Text { get; set; }
