@@ -37,5 +37,24 @@ namespace NewsPost.Data.Reps
                 this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
             }
         }
+
+        public bool HasAdminUser()
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+                var role = this._ctx.Roles.SingleOrDefault(o => o.Name.Equals("Administrator"));
+                if (role == null)
+                    return false;
+
+                var user = this._ctx.UserRoles.Where(o => o.RoleId.Equals(role.Id));
+                return user.Any();
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
+        }
     }
 }

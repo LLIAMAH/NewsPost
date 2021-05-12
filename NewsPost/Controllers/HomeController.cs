@@ -24,6 +24,9 @@ namespace NewsPost.Controllers
 
         public IActionResult Index()
         {
+            if (!CheckFirstRunHasAdmin())
+                return RedirectToAction("Create", "FirstStart", new { area ="FirstStep" });
+
             var functionName = MethodBase.GetCurrentMethod()?.Name;
             try
             {
@@ -38,6 +41,25 @@ namespace NewsPost.Controllers
             {
                 this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
                 return View(new Result<IEnumerable<Article>>(ex.Message));
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
+        }
+
+        private bool CheckFirstRunHasAdmin()
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+                return (this._rep as IRepUser).HasAdminUser();
+            }
+            catch (Exception ex)
+            {
+                this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
+                return false;
             }
             finally
             {

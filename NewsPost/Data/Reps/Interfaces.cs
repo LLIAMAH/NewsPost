@@ -17,9 +17,10 @@ namespace NewsPost.Data.Reps
     {
         ApplicationUser GetUser(IPrincipal principal);
         string GetUserId(IPrincipal principal);
+        bool HasAdminUser();
     }
 
-    public interface IRepNews
+    public interface IRepNews: IRepUser
     {
         IResult<IEnumerable<Article>> GetNewsDaily(DateTime dateTime);
     }
