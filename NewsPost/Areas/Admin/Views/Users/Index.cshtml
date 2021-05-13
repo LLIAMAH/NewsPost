@@ -43,7 +43,11 @@
             <td>
                 @if (item.IsWriter && User.IsInRole(ERole.Administrator.ToString()))
                 {
-                    <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="Users" asp-action="AssignRole" asp-route-userId="@item.User.Id" asp-route-role="@ERole.Editor">Make Editor</a>
+                    <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="Users" asp-action="AssignRole" asp-route-userId="@item.User.Id" asp-route-role="@ERole.Editor">Increase to Editor</a>
+                }
+                @if (item.IsEditor && User.IsInRole(ERole.Administrator.ToString()))
+                {
+                    <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="Users" asp-action="AssignRole" asp-route-userId="@item.User.Id" asp-route-role="@ERole.Writer">Decrease to Writer</a>
                 }
             </td>
         </tr>
