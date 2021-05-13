@@ -60,8 +60,15 @@ namespace NewsPost.Controllers
                 if (model == null)
                     throw new ArgumentNullException(nameof(model));
 
-                model.DateCreated = DateTime.Now;
-                model.AuthorId = _rep.GetUserId(this.User);
+                var currentUserId = _rep.GetUserId(this.User);
+                var currentDateTime = DateTime.Now;
+                model.DateCreated = currentDateTime;
+                model.AuthorId = currentUserId;
+                if (this.User.IsInRole(ERole.Editor.ToString()))
+                {
+                    model.ApprovedById = currentUserId;
+                    model.DateApproved = currentDateTime;
+                }
 
                 var result = _rep.Create(model);
                 if (!string.IsNullOrEmpty(result.Error))

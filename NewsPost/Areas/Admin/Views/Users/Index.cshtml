@@ -1,0 +1,56 @@
+﻿@using System.Linq
+@using NewsPost.Data.Reps
+@model NewsPost.Data.Reps.IResult<IEnumerable<UserData>>
+@{
+    ViewData["Title"] = "List of users";
+}
+
+<table class="table table-striped">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">
+            <label asp-for="Data.First().User.UserName"></label>
+        </th>
+        <th scope="col">
+            <label asp-for="Data.First().User.Email"></label>
+        </th>
+        <th scope="col">
+            <label asp-for="Data.First().RolesAsString"></label>
+        </th>
+        <th scope="col"></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Data)
+    {
+        <tr>
+            <td>@item.User.UserName</td>
+            <td>@item.User.Email</td>
+            <td>
+                @if (item.IsAdmin)
+                {
+                    <i class="fas fa-user-shield" data-toggle="tooltip" data-placement="bottom" title="Administrator"></i>
+                }
+                @if (item.IsWriter)
+                {
+                    <i class="fas fa-pen-nib" data-toggle="tooltip" data-placement="bottom" title="Writer"></i>
+                }
+                @if (item.IsEditor)
+                {
+                    <i class="fas fa-thumbs-up" data-toggle="tooltip" data-placement="bottom" title="Editor"></i>
+                }
+            </td>
+            <td>
+                @if (item.IsWriter && User.IsInRole(ERole.Administrator.ToString()))
+                {
+                    <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="Users" asp-action="AssignRole" asp-route-userId="@item.User.Id" asp-route-role="@ERole.Editor">Increase to Editor</a>
+                }
+                @if (item.IsEditor && User.IsInRole(ERole.Administrator.ToString()))
+                {
+                    <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="Users" asp-action="AssignRole" asp-route-userId="@item.User.Id" asp-route-role="@ERole.Writer">Decrease to Writer</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

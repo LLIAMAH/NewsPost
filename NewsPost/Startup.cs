@@ -34,6 +34,7 @@ namespace NewsPost
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
+            services.AddScoped<IRepUsers, Rep>();
             services.AddScoped<IRepNews, Rep>();
             services.AddScoped<IRepPosts, Rep>();
 
@@ -46,6 +47,7 @@ namespace NewsPost
                 options.Password.RequiredLength = 6;
                 options.Password.RequiredUniqueChars = 0;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbCtx>();
             services.AddControllersWithViews();
         }
@@ -74,6 +76,9 @@ namespace NewsPost
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "areaRoute",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -1,11 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using NewsPost.Areas.Admin.Models;
 using NewsPost.Data.Entities;
 
 namespace NewsPost.Data.Reps
 {
-    public interface IRep: IRepUser, IRepNews, IRepPosts { }
+    public enum ERole
+    {
+        Administrator,
+        Editor,
+        Writer
+    }
+    public interface IRep: IRepNews, IRepPosts, IRepUsers { }
 
     public interface IResult<out T>
     {
@@ -17,9 +24,16 @@ namespace NewsPost.Data.Reps
     {
         ApplicationUser GetUser(IPrincipal principal);
         string GetUserId(IPrincipal principal);
+        bool HasAdminUser();
+        ApplicationUser GetUserById(string userId);
     }
 
-    public interface IRepNews
+    public interface IRepUsers: IRepUser
+    {
+        IResult<IEnumerable<UserData>> GetUserWithRoles();
+    }
+
+    public interface IRepNews: IRepUser
     {
         IResult<IEnumerable<Article>> GetNewsDaily(DateTime dateTime);
     }
