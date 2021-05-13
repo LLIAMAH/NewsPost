@@ -1,4 +1,5 @@
 ﻿@using System.Linq
+@using NewsPost.Data.Reps
 @model NewsPost.Data.Reps.IResult<IEnumerable<UserData>>
 @{
     ViewData["Title"] = "List of users";
@@ -25,11 +26,25 @@
         <tr>
             <td>@item.User.UserName</td>
             <td>@item.User.Email</td>
-            <td>@item.RolesAsString</td>
             <td>
-                @*
-                for buttons @item.Id
-                *@
+                @if (item.IsAdmin)
+                {
+                    <i class="fas fa-user-shield" data-toggle="tooltip" data-placement="bottom" title="Administrator"></i>
+                }
+                @if (item.IsWriter)
+                {
+                    <i class="fas fa-pen-nib" data-toggle="tooltip" data-placement="bottom" title="Writer"></i>
+                }
+                @if (item.IsEditor)
+                {
+                    <i class="fas fa-thumbs-up" data-toggle="tooltip" data-placement="bottom" title="Editor"></i>
+                }
+            </td>
+            <td>
+                @if (item.IsWriter && User.IsInRole(ERole.Administrator.ToString()))
+                {
+                    <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="Users" asp-action="AssignRole" asp-route-userId="@item.User.Id" asp-route-role="@ERole.Editor">Make Editor</a>
+                }
             </td>
         </tr>
     }

@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsPost.Data.Entities;
+using NewsPost.Data.Reps;
 
 namespace NewsPost.Areas.Admin.Models
 {
@@ -26,6 +27,10 @@ namespace NewsPost.Areas.Admin.Models
             }
         }
 
+        public bool IsWriter { get { return this.Roles?.SingleOrDefault(o => o.Name.Equals(ERole.Writer.ToString())) != null; } }
+        public bool IsEditor { get { return this.Roles?.SingleOrDefault(o => o.Name.Equals(ERole.Editor.ToString())) != null; } }
+        public bool IsAdmin { get { return this.Roles?.SingleOrDefault(o => o.Name.Equals(ERole.Administrator.ToString())) != null; } }
+
         public UserData()
         {
             this.Roles = new List<IdentityRole>();
@@ -38,8 +43,8 @@ namespace NewsPost.Areas.Admin.Models
 
         public void AddRole(IdentityRole role)
         {
-            if (role != null)
-                this.Roles.Add(role);
+            if (role == null) return;
+            this.Roles.Add(role);
         }
     }
 }

@@ -15,8 +15,7 @@ namespace NewsPost.Data.Reps
             try
             {
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
-                var user = this._ctx.Users.SingleOrDefault(o => o.UserName.Equals(principal.Identity.Name));
-                return user;
+                return this._ctx.Users.SingleOrDefault(o => o.UserName.Equals(principal.Identity.Name));
             }
             finally
             {
@@ -48,8 +47,21 @@ namespace NewsPost.Data.Reps
                 if (role == null)
                     return false;
 
-                var user = this._ctx.UserRoles.Where(o => o.RoleId.Equals(role.Id));
-                return user.Any();
+                return this._ctx.UserRoles.Any(o => o.RoleId.Equals(role.Id));
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
+        }
+
+        public ApplicationUser GetUserById(string userId)
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+                return this._ctx.Users.SingleOrDefault(o => o.Id.Equals(userId));
             }
             finally
             {

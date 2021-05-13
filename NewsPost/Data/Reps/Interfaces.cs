@@ -25,9 +25,10 @@ namespace NewsPost.Data.Reps
         ApplicationUser GetUser(IPrincipal principal);
         string GetUserId(IPrincipal principal);
         bool HasAdminUser();
+        ApplicationUser GetUserById(string userId);
     }
 
-    public interface IRepUsers
+    public interface IRepUsers: IRepUser
     {
         IResult<IEnumerable<UserData>> GetUserWithRoles();
     }
