@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using NewsPost.Areas.FirstStep.Models;
@@ -53,27 +54,36 @@ namespace NewsPost.Areas.FirstStep.Controllers
                 await _roleManager.CreateAsync(new IdentityRole {Name = ERole.Editor.ToString(), NormalizedName = ERole.Editor.ToString()});
                 await _roleManager.CreateAsync(new IdentityRole {Name = ERole.Writer.ToString(), NormalizedName = ERole.Writer.ToString()});
 
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                    result = await _userManager.AddToRoleAsync(user, ERole.Administrator.ToString());
+                var resultCreated = await _userManager.CreateAsync(user, model.Password);
+                var resultAddRole = await _userManager.AddToRoleAsync(user, ERole.Administrator.ToString());
 
-                if (result.Succeeded)
+                if (resultCreated.Succeeded && resultAddRole.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    await _userManager.ConfirmEmailAsync(user, code);
-                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    var confirmedEmail = await _userManager.ConfirmEmailAsync(user, Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code)));
+                    if (confirmedEmail.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, isPersistent: false);
 
-                    return RedirectToAction("Index", "Home", null);
+                        return RedirectToAction("Index", "Home", new {Area = ""});
+                    }
+
+                    AddErrorsToModelState(ModelState, confirmedEmail);
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                AddErrorsToModelState(ModelState, resultCreated);
+                AddErrorsToModelState(ModelState, resultAddRole);
             }
 
             return View();
+        }
+
+        private static void AddErrorsToModelState(ModelStateDictionary modelState, IdentityResult identityResult)
+        {
+            foreach (var error in identityResult.Errors)
+                modelState.AddModelError(string.Empty, error.Description);
         }
     }
 }
