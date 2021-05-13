@@ -1,0 +1,61 @@
+﻿@using NewsPost.Data.Reps
+@model NewsPost.Data.Reps.IResult<IEnumerable<NewsPost.Data.Entities.Article>>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "View of the unapproved list of data";
+}
+
+@if (this.User.Identity != null && this.User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col">
+            <a class="btn btn-lg btn-primary" asp-area="" asp-controller="Post" asp-action="Create">Create new Article</a>
+        </div>
+    </div>
+}
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{ 
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-danger" role="alert">
+                @Model.Error
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Data != null && Model.Data.Any())
+{
+    <div class="row">
+        <div class="col">
+            <div class="accordion" id="accordionUnapprovedItems">
+                @foreach (var item in Model.Data)
+                {
+                    <div class="card">
+                        <div class="card-header" id="heading_@item.Id">
+                            <div class="d-flex flex-row justify-content-between">
+                                <h2 class="mb-0">
+                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse_@item.Id" aria-expanded="true" aria-controls="collapse_@item.Id">
+                                        @item.Title
+                                    </button>
+                                </h2>
+                                <div>
+                                    @if (User.IsInRole(ERole.Editor.ToString())) { 
+                                        <a class="btn btn-sm btn-success" asp-area="" asp-controller="Post" asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-clipboard-check"></i></a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapse_@item.Id" class="collapse" aria-labelledby="heading_@item.Id" data-parent="#accordionUnapprovedItems">
+                            @Html.DisplayFor(m=> item)
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+
