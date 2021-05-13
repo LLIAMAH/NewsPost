@@ -19,11 +19,11 @@ namespace NewsPost.Data.Reps
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
                 var articles = this._ctx.Articles
                     .Include(o => o.Author)
-                    .Where(o => o.DateCreated.Date == dateTime.Date)
+                    .Where(o => o.DateCreated.Date == dateTime.Date && o.DateApproved != null)
                     .ToList();
 
                 if (!articles.Any())
-                    throw new Exception("There is no data.");
+                    throw new Exception("There is no data today.");
 
                 return new Result<IEnumerable<Article>>(articles);
             }
