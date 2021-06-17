@@ -31,7 +31,7 @@ namespace NewsPost.Controllers
             try
             {
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
-                var data = this._rep.GetNewsDaily(DateTime.Now);
+                var data = this._rep.GetNewsDaily();
                 if (!string.IsNullOrEmpty(data?.Error))
                     throw new Exception(data?.Error);
 

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace NewsPost.Data.Entities
 {
@@ -28,5 +30,9 @@ namespace NewsPost.Data.Entities
         [ForeignKey("ApprovedBy")]
         public string ApprovedById { get; set; }
         public virtual ApplicationUser ApprovedBy { get; set; }
+
+        public bool HasComments => this.Comments != null && this.Comments.Any();
+
+        public virtual ICollection<Comment> Comments { get; set; }
     }
 }

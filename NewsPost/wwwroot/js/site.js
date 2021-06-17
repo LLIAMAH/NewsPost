@@ -3,6 +3,10 @@
 
 // Write your JavaScript code.
 
-$(function () {
+$(function() {
     $('[data-toggle="tooltip"]').tooltip();
-})
+});
+
+function addComment() {
+    alert('Test');
+}

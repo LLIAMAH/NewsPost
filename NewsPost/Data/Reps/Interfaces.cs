@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Security.Principal;
 using NewsPost.Areas.Admin.Models;
 using NewsPost.Data.Entities;
@@ -35,7 +34,7 @@ namespace NewsPost.Data.Reps
 
     public interface IRepNews: IRepUser
     {
-        IResult<IEnumerable<Article>> GetNewsDaily(DateTime dateTime);
+        IResult<IEnumerable<Article>> GetNewsDaily();
     }
 
     public interface IRepPosts : IRepUser

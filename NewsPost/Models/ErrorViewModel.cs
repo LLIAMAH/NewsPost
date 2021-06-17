@@ -1,5 +1,3 @@
-using System;
-
 namespace NewsPost.Models
 {
     public class ErrorViewModel

@@ -11,7 +11,7 @@ namespace NewsPost.Data.Reps
 {
     public partial class Rep
     {
-        public IResult<IEnumerable<Article>> GetNewsDaily(DateTime dateTime)
+        public IResult<IEnumerable<Article>> GetNewsDaily()
         {
             var functionName = MethodBase.GetCurrentMethod()?.Name;
             try
@@ -19,7 +19,8 @@ namespace NewsPost.Data.Reps
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
                 var articles = this._ctx.Articles
                     .Include(o => o.Author)
-                    .Where(o => o.DateCreated.Date == dateTime.Date && o.DateApproved != null)
+                    .Where(o => o.DateApproved != null)
+                    .OrderByDescending(o => o.DateCreated)
                     .ToList();
 
                 if (!articles.Any())
