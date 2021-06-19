@@ -8,7 +8,7 @@ $(function() {
     tooltipTriggerList.map(function(tooltipTriggerEl) {
         return new bootstrap.Tooltip(tooltipTriggerEl);
     });
-})();
+});
 
 function addComment() {
     alert('Test');
