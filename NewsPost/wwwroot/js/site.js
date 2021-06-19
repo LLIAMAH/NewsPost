@@ -4,8 +4,11 @@
 // Write your JavaScript code.
 
 $(function() {
-    $('[data-toggle="tooltip"]').tooltip();
-});
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    tooltipTriggerList.map(function(tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+})();
 
 function addComment() {
     alert('Test');

@@ -27,30 +27,42 @@
     </div>
 }
 
+<hr/>
+
 @if (Model.Data != null && Model.Data.Any())
 {
     <div class="row">
         <div class="col">
+            
             <div class="accordion" id="accordionUnapprovedItems">
                 @foreach (var item in Model.Data)
                 {
-                    <div class="card">
-                        <div class="card-header" id="heading_@item.Id">
-                            <div class="d-flex flex-row justify-content-between">
-                                <h2 class="mb-0">
-                                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapse_@item.Id" aria-expanded="true" aria-controls="collapse_@item.Id">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading_@item.Id">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_@item.Id" aria-expanded="false" aria-controls="collapse_@item.Id">
+                                Post #@item.Id (Created: @item.Author, @item.DateCreated)
+                            </button>
+                        </h2>
+                        <div id="collapse_@item.Id" class="accordion-collapse collapse" aria-labelledby="heading_@item.Id" data-bs-parent="#accordionUnapprovedItems">
+                            <div class="accordion-body">
+                                <div class="d-flex flex-row justify-content-between">
+                                    <h5 class="mb-0">
                                         @item.Title
-                                    </button>
-                                </h2>
-                                <div>
-                                    @if (User.IsInRole(ERole.Editor.ToString())) { 
-                                        <a class="btn btn-sm btn-success" asp-area="" asp-controller="Post" asp-action="Approve" asp-route-id="@item.Id"><i class="fas fa-clipboard-check"></i></a>
-                                    }
+                                    </h5>
+                                    <div>
+                                        @if (User.IsInRole(ERole.Editor.ToString()))
+                                        {
+                                            <a class="btn btn-sm btn-success" asp-area="" asp-controller="Post" asp-action="Approve" asp-route-id="@item.Id" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Approve">
+                                                <i class="fas fa-clipboard-check"></i>
+                                            </a>
+                                        }
+                                    </div>
                                 </div>
+                                <hr/>
+                                <article>
+                                    @item.Text
+                                </article>
                             </div>
-                        </div>
-                        <div id="collapse_@item.Id" class="collapse" aria-labelledby="heading_@item.Id" data-parent="#accordionUnapprovedItems">
-                            @Html.DisplayFor(m=> item)
                         </div>
                     </div>
                 }
@@ -58,4 +70,3 @@
         </div>
     </div>
 }
-
