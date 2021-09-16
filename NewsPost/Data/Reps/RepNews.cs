@@ -19,6 +19,7 @@ namespace NewsPost.Data.Reps
                 this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
                 var articles = this._ctx.Articles
                     .Include(o => o.Author)
+                    .Include(o => o.Comments)
                     .Where(o => o.DateApproved != null)
                     .OrderByDescending(o => o.DateCreated)
                     .ToList();

@@ -1,65 +1,69 @@
 ﻿@model NewsPost.Data.Entities.Article
 
-<div class="card">
-    @*<img src="..." class="card-img-top" alt="...">*@
-    <div class="card-body">
-        <div class="row">
-            <div class="col-10">
-                <h5 class="card-title">@Model.Title</h5>
-                @if (!string.IsNullOrEmpty(Model.SubTitle))
-                {
-                    <h6 class="card-subtitle mb-2 text-muted">@Model.SubTitle</h6>
-                }
-            </div>
-            <div class="col-2">
+<div class="row article-row">
+    <div class="col">
+        <div class="card">
+            @*<img src="..." class="card-img-top" alt="...">*@
+            <div class="card-body">
                 <div class="row">
-                    <div class="col">
-                        <a href="#" class="card-link">@Model.Author.UserName</a>
+                    <div class="col-10">
+                        <h5 class="card-title">@Model.Title</h5>
+                        @if (!string.IsNullOrEmpty(Model.SubTitle))
+                        {
+                            <h6 class="card-subtitle mb-2 text-muted">@Model.SubTitle</h6>
+                        }
+                    </div>
+                    <div class="col-2">
+                        <div class="row">
+                            <div class="col">
+                                <a href="#" class="card-link">@Model.Author.UserName</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                @Model.DateCreated.ToShortDateString()
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
-                        @Model.DateCreated.ToShortDateString()
+                        <p class="card-text">@Model.Text</p>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                <p class="card-text">@Model.Text</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="offset-10 col">
+                <div class="row">
+                    <div class="offset-10 col">
+                        @if (Model.HasComments)
+                        {
+                            <a class="btn btn-sm btn-primary" data-toggle="collapse" href="#collapseComments" role="button" aria-expanded="false" aria-controls="collapseComments" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View comments">
+                                <i class="far fa-comments"></i>
+                            </a>
+                        }
+                        <a class="btn btn-sm btn-success" asp-area="" asp-controller="Post" asp-action="AddComment" asp-route-id="@Model.Id" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add comment">
+                            <i class="fas fa-comment-medical"></i>
+                        </a>
+                    </div>
+                </div>
                 @if (Model.HasComments)
                 {
-                    <a class="btn btn-sm btn-primary" data-toggle="collapse" href="#collapseComments" role="button" aria-expanded="false" aria-controls="collapseComments" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View comments">
-                        <i class="far fa-comments"></i>
-                    </a>
+                    <div class="row">
+                        <div class="col">
+
+                            <div class="collapse" id="collapseComments">
+                                <hr />
+                                <ul class="list-group">
+                                    @foreach (var comment in Model.Comments.OrderBy(o => o.DateCreated))
+                                    {
+                                        <li class="list-group-item">
+                                            @comment.Text
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 }
-                <a class="btn btn-sm btn-success" asp-area="" asp-controller="Post" asp-action="AddComment" asp-route-id="@Model.Id" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add comment">
-                    <i class="fas fa-comment-medical"></i>
-                </a>
             </div>
         </div>
-        @if (Model.HasComments)
-        {
-            <div class="row">
-                <div class="col">
-                    
-                    <div class="collapse" id="collapseComments">
-                        <hr />
-                        <ul class="list-group">
-                            @foreach (var comment in Model.Comments.OrderBy(o => o.DateCreated))
-                            {
-                                <li class="list-group-item">
-                                    @comment.Text
-                                </li>
-                            }
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        }
     </div>
 </div>
