@@ -1,0 +1,66 @@
+﻿@model NewsPost.Models.CommentModel
+
+@{
+    ViewData["Title"] = "AddComment";
+}
+
+@if (!string.IsNullOrEmpty(Model.Error))
+{
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-danger" role="alert">
+                @Model.Error
+            </div>
+        </div>
+    </div>
+}
+
+<h4>Add comment</h4>
+<hr />
+<h4>for</h4>
+<div class="row">
+    <div class="col">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.Article.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@Model.Article.SubTitle</h6>
+                        <hr />
+                        <p class="card-text">
+                            @Model.Article.Text
+                        </p>
+                        <p class="card-text"><small class="text-muted">@Model.Article.Author.UserName</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <form asp-action="AddCommentSubmit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.HiddenFor(m => m.Article.Id)
+                    @Html.HiddenFor(m => m.Article.Title)
+                    @Html.HiddenFor(m => m.Article.Author)
+                    @Html.HiddenFor(m => m.Article.Text)
+                    <div class="form-group">
+                        <label asp-for="Text" class="control-label"></label>
+                        <textarea asp-for="Text" class="form-control" rows="10"></textarea>
+                        <span asp-validation-for="Text" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" value="AddComment" class="btn btn-primary">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

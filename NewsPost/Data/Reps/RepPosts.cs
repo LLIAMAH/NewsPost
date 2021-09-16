@@ -96,5 +96,64 @@ namespace NewsPost.Data.Reps
                 this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
             }
         }
+
+        public IResult<Article> GetArticle(long id)
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+                var article = this._ctx.Articles
+                    .Include(o => o.Author)
+                    .FirstOrDefault(o => o.Id == id);
+
+                if (article == null)
+                    throw new Exception("There is no data.");
+
+                return new Result<Article>(article);
+            }
+            catch (Exception ex)
+            {
+                this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
+                return new Result<Article>(ex.Message);
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
+        }
+
+        public IResult<bool> AddComment(long articleId, string comment)
+        {
+            var functionName = MethodBase.GetCurrentMethod()?.Name;
+            try
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogStart(functionName));
+                var article = this._ctx.Articles
+                    .Include(o => o.Author)
+                    .FirstOrDefault(o => o.Id == articleId);
+
+                if (article == null)
+                    throw new Exception("There is no such article data.");
+
+                this._ctx.Comments.Add(new Comment()
+                {
+                    ArticleId = article.Id,
+                    DateCreated = DateTime.UtcNow,
+                    Text = comment,
+                });
+
+                return SaveSafe(this._ctx);
+            }
+            catch (Exception ex)
+            {
+                this._logger?.LogError(LogRecord.CreateLogRecord(functionName, ex));
+                return new Result<bool>(ex.Message);
+            }
+            finally
+            {
+                this._logger?.LogInformation(LogRecord.CreateLogFinish(functionName));
+            }
+        }
     }
 }
