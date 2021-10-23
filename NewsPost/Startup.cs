@@ -32,16 +32,18 @@ namespace NewsPost
             services.AddScoped<IRepUsers, Rep>();
             services.AddScoped<IRepNews, Rep>();
             services.AddScoped<IRepPosts, Rep>();
+            services.AddScoped<IRepComments, Rep>();
 
-            services.AddDefaultIdentity<ApplicationUser>(options => {
-                options.SignIn.RequireConfirmedAccount = true;
-                options.Password.RequireDigit = false;
-                options.Password.RequireLowercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequiredLength = 6;
-                options.Password.RequiredUniqueChars = 0;
-            })
+            services.AddDefaultIdentity<ApplicationUser>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = true;
+                    options.Password.RequireDigit = false;
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredUniqueChars = 0;
+                })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbCtx>();
             services.AddControllersWithViews();

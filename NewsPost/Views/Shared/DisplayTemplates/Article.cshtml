@@ -35,11 +35,11 @@
                     <div class="offset-10 col">
                         @if (Model.HasComments)
                         {
-                            <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample_@Model.Id" aria-expanded="false" aria-controls="collapseExample_@Model.Id" data-bs-toggle="tooltip" data-bs-placement="bottom" title="View comments">
+                            <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample_@Model.Id" aria-expanded="false" aria-controls="collapseExample_@Model.Id" data-bs-placement="bottom" title="View comments">
                                 <i class="far fa-comments"></i>
                             </button>
                         }
-                        <a class="btn btn-sm btn-success" asp-area="" asp-controller="Post" asp-action="AddComment" asp-route-id="@Model.Id" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add comment">
+                        <a class="btn btn-sm btn-success" asp-area="" asp-controller="Comment" asp-action="AddComment" asp-route-id="@Model.Id" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add comment">
                             <i class="fas fa-comment-medical"></i>
                         </a>
                     </div>

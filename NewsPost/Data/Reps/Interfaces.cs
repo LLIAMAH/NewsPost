@@ -11,7 +11,7 @@ namespace NewsPost.Data.Reps
         Editor,
         Writer
     }
-    public interface IRep: IRepNews, IRepPosts, IRepUsers { }
+    public interface IRep: IRepNews, IRepPosts, IRepComments, IRepUsers { }
 
     public interface IResult<out T>
     {
@@ -42,6 +42,10 @@ namespace NewsPost.Data.Reps
         IResult<IEnumerable<Article>> GetUnApprovedArticles(string userId);
         IResult<bool> Create(Article article);
         IResult<bool> Approve(long articleId, string userId);
+    }
+
+    public interface IRepComments : IRepUser
+    {
         IResult<Article> GetArticle(long id);
         IResult<bool> AddComment(long articleId, string comment);
     }
