@@ -20,7 +20,7 @@ namespace NewsPost.Controllers
             this._logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(long id = 0)
         {
             return View();
         }
